@@ -11,9 +11,9 @@ type logger struct {
 	Inner http.Handler
 }
 
-func (l *logger) ServerHTTP(w http.ResponseWriter, req *http.Request) {
+func (l *logger) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	log.Printf("start %s\n", time.Now().String())
-	l.Inner.ServerHttp(w, req)
+	l.Inner.ServeHTTP(w, req)
 	log.Printf("finish %s\n", time.Now().String())
 }
 
@@ -24,5 +24,5 @@ func hello(w http.ResponseWriter, req *http.Request) {
 func main() {
 	f := http.HandlerFunc(hello)
 	l := logger{Inner: f}
-	http.ListenAndServer(":8000", &1)
+	http.ListenAndServe(":8000", &l)
 }
